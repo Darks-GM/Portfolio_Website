@@ -88,13 +88,13 @@ navLinks.forEach(link => {
     });
 });
 
-// Fermer le menu au clic en dehors
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.navbar')) {
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
-    }
-});
+// // Fermer le menu au clic en dehors
+// document.addEventListener('click', (e) => {
+//     if (!e.target.closest('.navbar')) {
+//         navMenu.classList.remove('active');
+//         hamburger.classList.remove('active');
+//     }
+// });
 
 // Gestion du formulaire de contact
 const contactForm = document.getElementById('contactForm');
@@ -121,8 +121,9 @@ const musicToggle = document.getElementById('musicToggle');
 
 if (ambientMusic && musicToggle) {
     // Défaut : musique arrêtée au chargement
-    ambientMusic.pause();
-    ambientMusic.volume = 0.2; // Volume à 30%
+    ambientMusic.play();
+    musicToggle.classList.add('playing');
+    ambientMusic.volume = 0.2;
     
     // Écouteur pour le bouton
     musicToggle.addEventListener('click', () => {
