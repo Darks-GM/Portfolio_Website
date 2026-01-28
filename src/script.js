@@ -150,7 +150,11 @@ if (contactForm) {
             }
 
             // Envoyer les données au serveur backend
-            const response = await fetch('http://localhost:3000/api/send-email', {
+            const apiUrl = window.location.hostname === 'localhost' 
+                ? 'http://localhost:3000/api/send-email'
+                : 'https://florian-ahyane.com/api/send-email';
+            
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -165,7 +169,6 @@ if (contactForm) {
             
             const data = await response.json();
             
-            // Masquer le spinner et réactiver le bouton
             document.getElementById('submitText').style.display = 'inline';
             document.getElementById('spinner').style.display = 'none';
             document.getElementById('submitBtn').disabled = false;

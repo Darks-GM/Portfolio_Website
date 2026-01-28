@@ -11,6 +11,7 @@ app.use(cors({
     origin: process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
     credentials: true
 }));
+console.log(`✓ CORS origin configurée: ${process.env.ALLOWED_ORIGIN || 'http://localhost:3000'}`);
 app.use(express.json());
 app.use(express.static('src'));
 
