@@ -6,6 +6,7 @@
     <title>Florian AH-YANE</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeGE1ksAAAAADqUa7nkLxD7jJGz74LT8sA1h6y4" async defer></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -45,10 +46,11 @@
                     <p>Je suis développeur web et application FullStack orienté Frontend et développeur sur Unreal Engine 5. Diplômé en Technologie de l'information BAC+3 plus 1 an d'étude sur Unreal Engine en 2025 (EPITECH). J'aime transformer des idées en solutions numériques innovantes.</p>
                     <p>Avec des compétences en HTML, CSS, JavaScript et plusieurs frameworks, je crée des application et sit web avec passion.</p>
                     <p>J'ai pour objectif proffessionnel de travailler dans l'industrie du jeu vidéo, en construisant ma propre boite(avec la création de mon propre jeu vidéo) ou rejoindre une grande enseigne.</p>
-                    <p>Je suis à la recherche d'un premier emploie dans le développement. #opentowork</p>
+                    <p>Je suis à la recherche d'un premier emploie dans le développement.</p>
+                    <p style="color:greenyellow"><strong>#Opentowork</strong></p>
                 </div>
                 <div class="about-image">
-                    <img src="Ressources\Images\id.jpg" alt="Photo profil" class="profile-img">
+                    <img src="../Ressources\Images\id.jpg" alt="Photo profil" class="profile-img">
                 </div>
             </div>
         </div>
@@ -136,11 +138,24 @@
         <div class="container">
             <h2>Contactez-moi</h2>
             <div class="contact-content">
-                <form class="contact-form" id="contactForm">
-                    <input type="text" placeholder="Votre nom" required>
-                    <input type="email" placeholder="Votre email" required>
-                    <textarea placeholder="Votre message" rows="5" required></textarea>
-                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                <form class="contact-form" id="contactForm" novalidate>
+                    <div class="form-group">
+                        <input type="text" id="nameInput" name="name" placeholder="Votre nom" required>
+                        <span class="error-message" id="nameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="emailInput" name="email" placeholder="Votre email" required>
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="messageInput" name="message" placeholder="Votre message" rows="5" required></textarea>
+                        <span class="error-message" id="messageError"></span>
+                    </div>
+                    <div class="form-message" id="formMessage"></div>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span id="submitText">Envoyer</span>
+                        <span id="spinner" class="spinner" style="display: none;"></span>
+                    </button>
                 </form>
                 <div class="contact-info">
                     <div class="info-item">
@@ -166,7 +181,7 @@
 
     <!-- Audio ambiante -->
     <audio id="ambientMusic" loop>
-        <source src="Ressources\Song\Retro Chill Lobby.mp3" type="audio/mpeg">
+        <source src="..\Ressources\Song\Retro Chill Lobby.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Bouton de contrôle du son -->
@@ -177,7 +192,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Mon Portfolio. Tous droits réservés.</p>
+            <p>&copy; 2026 Florian AH-YANE. Tous droits réservés.</p>
         </div>
     </footer>
 

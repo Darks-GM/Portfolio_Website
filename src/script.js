@@ -1,6 +1,4 @@
-console.log('🎮 Portfolio Gaming Edition Activé!');
-
-// Gestion du curseur gaming
+//curseur 
 const cursor = document.createElement('div');
 cursor.style.cssText = `
     position: fixed;
@@ -25,7 +23,7 @@ document.addEventListener('mouseleave', () => {
     cursor.style.display = 'none';
 });
 
-// Effet de clic gaming
+//clic
 document.addEventListener('click', (e) => {
     const click = document.createElement('div');
     click.style.cssText = `
@@ -80,7 +78,7 @@ hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
 });
 
-// Fermer le menu au clic sur un lien
+// Fermer le menu
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
         navMenu.classList.remove('active');
@@ -96,31 +94,108 @@ navLinks.forEach(link => {
 //     }
 // });
 
-// Gestion du formulaire de contact
+// Gestion du formulaire de contact avec reCAPTCHA et validation
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        // Réinitialiser les messages d'erreur
+        document.getElementById('nameError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('messageError').textContent = '';
+        document.getElementById('formMessage').textContent = '';
+        
         // Récupérer les valeurs
-        const name = contactForm.querySelector('input[type="text"]').value;
-        const email = contactForm.querySelector('input[type="email"]').value;
-        const message = contactForm.querySelector('textarea').value;
+        const name = document.getElementById('nameInput').value.trim();
+        const email = document.getElementById('emailInput').value.trim();
+        const message = document.getElementById('messageInput').value.trim();
         
-        // Afficher un message de confirmation
-        alert(`Merci ${name}! Votre message a été reçu. Nous vous recontacterons bientôt à ${email}.`);
+        // Validation
+        let isValid = true;
         
-        // Réinitialiser le formulaire
-        contactForm.reset();
+        if (!name || name.length < 2) {
+            document.getElementById('nameError').textContent = 'Le nom doit contenir au moins 2 caractères';
+            isValid = false;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            document.getElementById('emailError').textContent = 'Veuillez entrer une adresse email valide';
+            isValid = false;
+        }
+        
+        if (!message || message.length < 10) {
+            document.getElementById('messageError').textContent = 'Le message doit contenir au moins 10 caractères';
+            isValid = false;
+        }
+        
+        if (!isValid) return;
+        
+        // Afficher le spinner et désactiver le bouton
+        document.getElementById('submitText').style.display = 'none';
+        document.getElementById('spinner').style.display = 'inline-block';
+        document.getElementById('submitBtn').disabled = true;
+        
+        try {
+            // Exécuter reCAPTCHA v3 pour obtenir un token (si configuré)
+            let recaptchaToken = null;
+            if (window.grecaptcha && grecaptcha.execute) {
+                try {
+                    await new Promise(resolve => grecaptcha.ready(resolve));
+                    recaptchaToken = await grecaptcha.execute('6LeGE1ksAAAAADqUa7nkLxD7jJGz74LT8sA1h6y4', { action: 'contact' });
+                } catch (recapErr) {
+                    console.error('reCAPTCHA error:', recapErr);
+                }
+            }
+
+            // Envoyer les données au serveur backend
+            const response = await fetch('http://localhost:3000/api/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    message: message,
+                    recaptchaToken: recaptchaToken
+                })
+            });
+            
+            const data = await response.json();
+            
+            // Masquer le spinner et réactiver le bouton
+            document.getElementById('submitText').style.display = 'inline';
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('submitBtn').disabled = false;
+            
+            if (response.ok) {
+                document.getElementById('formMessage').className = 'form-message success';
+                document.getElementById('formMessage').textContent = '✓ Message envoyé avec succès! Je vous recontacterai bientôt.';
+                contactForm.reset();
+            } else {
+                document.getElementById('formMessage').className = 'form-message error';
+                document.getElementById('formMessage').textContent = data.message || 'Erreur lors de l\'envoi du message.';
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+            document.getElementById('submitText').style.display = 'inline';
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('formMessage').className = 'form-message error';
+            document.getElementById('formMessage').textContent = 'Une erreur est survenue. Veuillez réessayer.';
+        }
     });
 }
+
 
 // Gestion de la musique ambiante
 const ambientMusic = document.getElementById('ambientMusic');
 const musicToggle = document.getElementById('musicToggle');
 
+ambientMusic.play();
 if (ambientMusic && musicToggle) {
-    // Défaut : musique arrêtée au chargement
     ambientMusic.play();
     musicToggle.classList.add('playing');
     ambientMusic.volume = 0.2;
