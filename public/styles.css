@@ -1,0 +1,15 @@
+/* Copié depuis src/styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+:root {
+  --bg: #0b1020;
+  --card: #0f1724;
+  --muted: #9aa4c0;
+  --accent: #7c3aed;
+}
+
+/* styles abrégés pour l'exemple */
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin:0 }
+.navbar { padding: 1rem 0 }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1rem }
+.profile-img { width: 200px; border-radius: 8px }
