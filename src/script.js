@@ -1,4 +1,3 @@
-//curseur 
 const cursor = document.createElement('div');
 cursor.style.cssText = `
     position: fixed;
@@ -23,7 +22,6 @@ document.addEventListener('mouseleave', () => {
     cursor.style.display = 'none';
 });
 
-//clic
 document.addEventListener('click', (e) => {
     const click = document.createElement('div');
     click.style.cssText = `
@@ -67,18 +65,15 @@ document.addEventListener('click', (e) => {
     setTimeout(() => click.remove(), 600);
 });
 
-// Menu hamburger mobile
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 
-// Toggle menu
 hamburger.addEventListener('click', () => {
     navMenu.classList.toggle('active');
     hamburger.classList.toggle('active');
 });
 
-// Fermer le menu
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
         navMenu.classList.remove('active');
@@ -86,32 +81,20 @@ navLinks.forEach(link => {
     });
 });
 
-// // Fermer le menu au clic en dehors
-// document.addEventListener('click', (e) => {
-//     if (!e.target.closest('.navbar')) {
-//         navMenu.classList.remove('active');
-//         hamburger.classList.remove('active');
-//     }
-// });
-
-// Gestion du formulaire de contact avec reCAPTCHA et validation
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Réinitialiser les messages d'erreur
         document.getElementById('nameError').textContent = '';
         document.getElementById('emailError').textContent = '';
         document.getElementById('messageError').textContent = '';
         document.getElementById('formMessage').textContent = '';
         
-        // Récupérer les valeurs
         const name = document.getElementById('nameInput').value.trim();
         const email = document.getElementById('emailInput').value.trim();
         const message = document.getElementById('messageInput').value.trim();
         
-        // Validation
         let isValid = true;
         
         if (!name || name.length < 2) {
@@ -131,14 +114,12 @@ if (contactForm) {
         }
         
         if (!isValid) return;
-        
-        // Afficher le spinner et désactiver le bouton
+
         document.getElementById('submitText').style.display = 'none';
         document.getElementById('spinner').style.display = 'inline-block';
         document.getElementById('submitBtn').disabled = true;
         
         try {
-            // Exécuter reCAPTCHA v3 pour obtenir un token (si configuré)
             let recaptchaToken = null;
             if (window.grecaptcha && grecaptcha.execute) {
                 try {
@@ -149,7 +130,6 @@ if (contactForm) {
                 }
             }
 
-            // Envoyer les données au serveur backend
             const apiUrl = window.location.hostname === 'localhost' 
                 ? 'http://localhost:3000/api/send-email'
                 : 'https://florian-ahyane.com/api/send-email';
@@ -192,8 +172,6 @@ if (contactForm) {
     });
 }
 
-
-// Gestion de la musique ambiante
 const ambientMusic = document.getElementById('ambientMusic');
 const musicToggle = document.getElementById('musicToggle');
 
@@ -202,8 +180,6 @@ if (ambientMusic && musicToggle) {
     ambientMusic.play();
     musicToggle.classList.add('playing');
     ambientMusic.volume = 0.2;
-    
-    // Écouteur pour le bouton
     musicToggle.addEventListener('click', () => {
         if (ambientMusic.paused) {
             ambientMusic.play();
@@ -217,7 +193,6 @@ if (ambientMusic && musicToggle) {
     });
 };
 
-// Animation au scroll
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -232,7 +207,6 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observer les cartes de projets
 document.querySelectorAll('.project-card').forEach(card => {
     card.style.opacity = '0';
     card.style.transform = 'translateY(20px)';
@@ -240,7 +214,6 @@ document.querySelectorAll('.project-card').forEach(card => {
     observer.observe(card);
 });
 
-// Observer les catégories de compétences
 document.querySelectorAll('.skill-category').forEach(skill => {
     skill.style.opacity = '0';
     skill.style.transform = 'translateY(20px)';
@@ -248,7 +221,6 @@ document.querySelectorAll('.skill-category').forEach(skill => {
     observer.observe(skill);
 });
 
-// Smooth scroll pour les ancres
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
@@ -261,7 +233,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Animation du compteur (optionnel - à ajouter si vous avez une section statistiques)
 function animateCounter(element, target, duration = 1000) {
     const start = 0;
     const increment = target / (duration / 16);
@@ -277,12 +248,3 @@ function animateCounter(element, target, duration = 1000) {
         }
     }, 16);
 }
-
-// Effet parallaxe (optionnel)
-// window.addEventListener('scroll', () => {
-//     const hero = document.querySelector('.hero');
-//     const scrollPosition = window.scrollY;
-//     if (hero) {
-//         hero.style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
-//     }
-// });

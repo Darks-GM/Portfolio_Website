@@ -6,7 +6,6 @@ require('dotenv').config();
 
 const app = express();
 
-// Middlewares
 app.use(cors({
     origin: process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
     credentials: true
@@ -15,7 +14,6 @@ console.log(`✓ CORS origin configurée: ${process.env.ALLOWED_ORIGIN || 'http:
 app.use(express.json());
 app.use(express.static('src'));
 
-// Configuration du transporteur email
 const transporter = nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE,
     auth: {
@@ -24,7 +22,6 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Fonction pour vérifier le reCAPTCHA
 async function verifyRecaptcha(token) {
     try {
         const response = await axios.post(
@@ -38,9 +35,6 @@ async function verifyRecaptcha(token) {
             }
         );
 
-        // reCAPTCHA v3 retourne un score entre 0 et 1
-        // 1.0 est très probablement une interaction humaine
-        // 0.0 est très probablement un bot
         const score = response.data.score;
         const threshold = 0.5;
 
@@ -54,12 +48,10 @@ async function verifyRecaptcha(token) {
     }
 }
 
-// Route pour envoyer les emails
 app.post('/api/send-email', async (req, res) => {
     try {
         const { name, email, message, recaptchaToken } = req.body;
 
-        // Validation des données
         if (!name || !email || !message) {
             return res.status(400).json({ message: 'Données manquantes' });
         }
@@ -68,7 +60,6 @@ app.post('/api/send-email', async (req, res) => {
             return res.status(400).json({ message: 'Les données ne respectent pas les critères' });
         }
 
-        // Si la clé reCAPTCHA est configurée, vérifier le token
         if (process.env.RECAPTCHA_SECRET_KEY) {
             if (!recaptchaToken) {
                 return res.status(400).json({ message: 'reCAPTCHA token manquant.' });
@@ -81,7 +72,6 @@ app.post('/api/send-email', async (req, res) => {
             console.warn('RECAPTCHA_SECRET_KEY non configurée. Ignorer la vérification reCAPTCHA.');
         }
 
-        // Email pour le propriétaire du site
         const ownerMailOptions = {
             from: process.env.EMAIL_USER,
             to: process.env.OWNER_EMAIL,
@@ -97,7 +87,6 @@ app.post('/api/send-email', async (req, res) => {
             replyTo: email
         };
 
-        // Email de confirmation pour le visiteur
         const visitorMailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -112,7 +101,6 @@ app.post('/api/send-email', async (req, res) => {
             `
         };
 
-        // Envoyer les deux emails
         await Promise.all([
             transporter.sendMail(ownerMailOptions),
             transporter.sendMail(visitorMailOptions)
@@ -126,12 +114,10 @@ app.post('/api/send-email', async (req, res) => {
     }
 });
 
-// Route de santé
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK' });
 });
 
-// Démarrer le serveur
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`✓ Serveur démarré sur le port ${PORT}`);

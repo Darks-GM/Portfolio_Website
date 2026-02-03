@@ -21,7 +21,7 @@ Pour que ton site apparaisse dans la recherche Google:
 À ajouter dans le `<head>` de `index.html`:
 ```html
 <meta name="description" content="Florian AH-YANE - Développeur Web, App et Unreal Engine 5">
-<meta name="keywords" content="développeur, portfolio, web, React, Node.js, Unreal Engine">
+<meta name="keywords" content="développeur, portfolio, web, React, Unreal Engine">
 <meta name="author" content="Florian AH-YANE">
 <meta property="og:title" content="Portfolio Florian AH-YANE">
 <meta property="og:description" content="Développeur Web, App et Unreal Engine 5">
@@ -62,8 +62,6 @@ cp .env.example .env
 ```bash
 npm run dev
 ```
-
-Ouvrir: http://localhost:3000
 
 ## Déploiement
 
